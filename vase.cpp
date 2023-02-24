@@ -38,10 +38,40 @@ void off(){
   lampCtl(0, 0, 0);
 }
 
+void party(){
+  red();
+  waitAndAbortIfChanged();
+  white();
+  waitAndAbortIfChanged();
+  green();
+  waitAndAbortIfChanged();
+  yellow();
+  waitAndAbortIfChanged();
+  blue();
+  waitAndAbortIfChanged();
+  cyan();
+  waitAndAbortIfChanged();
+  magenta();
+  waitAndAbortIfChanged();
+}
+
+void waitAndAbortIfChanged(){
+  for(int i = 0 ; i < 20 ; ++i){
+    delay(50);
+    if(analogRead(A0) < 951){
+      exit;
+  	}
+  }
+}
+
 void loop() {
   int p = analogRead(A0);
-
-  if(p > 876){
+  
+  if(p > 951){
+    party();
+  }
+  
+  if(p > 876 && p < 950){
     white();
   }
 
