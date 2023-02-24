@@ -1,10 +1,8 @@
 void setup() {
-pinMode(LED_BUILTIN, OUTPUT);
-pinMode(2, OUTPUT); // red
-pinMode(3, OUTPUT); // green
-pinMode(4, OUTPUT); // blue
-pinMode(A0, INPUT); // potentiometer
-Serial.begin(9600);
+  pinMode(2, OUTPUT); // red
+  pinMode(3, OUTPUT); // green
+  pinMode(4, OUTPUT); // blue
+  pinMode(A0, INPUT); // potentiometer
 }
 
 void lampCtl(bool red, bool green, bool blue){
@@ -41,41 +39,39 @@ void off(){
 }
 
 void loop() {
-int p = analogRead(A0);
+  int p = analogRead(A0);
 
-if(p > 876){
-  white();
-}
+  if(p > 876){
+    white();
+  }
 
-if(p > 751 && p < 875){
-  yellow();
-}
+  if(p > 751 && p < 875){
+    yellow();
+  }
 
-if(p > 626 && p < 750){
-  cyan();
-}
+  if(p > 626 && p < 750){
+    cyan();
+  }
 
-if(p > 501 && p < 625){
-  magenta();
-}
+  if(p > 501 && p < 625){
+    magenta();
+  }
 
-if(p > 376 && p < 500){
-  blue();
-}
+  if(p > 376 && p < 500){
+    blue();
+  }
 
-if(p > 251 && p < 375){
-  green();
-}
+  if(p > 251 && p < 375){
+    green();
+  }
 
-if(p > 126 && p < 250){
-  red();
-}
+  if(p > 126 && p < 250){
+    red();
+  }
 
-if(p < 125){
-  off();
-}
+  if(p < 125){
+    off();
+  }
 
-digitalWrite(LED_BUILTIN, HIGH);
-delay(500);
-digitalWrite(LED_BUILTIN, LOW);
+  delay(50);
 }
