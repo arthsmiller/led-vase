@@ -1,16 +1,23 @@
+//#include <JeeLib.h>
+
+int redIO = 2;
+int greenIO = 3;
+int blueIO = 4;
+
 void setup() {
-  pinMode(2, OUTPUT); // red
-  pinMode(3, OUTPUT); // green
-  pinMode(4, OUTPUT); // blue
+  pinMode(redIO, OUTPUT); // red
+  pinMode(greenIO, OUTPUT); // green
+  pinMode(blueIO, OUTPUT); // blue
   pinMode(A0, INPUT); // potentiometer
 }
 
 void lampCtl(bool red, bool green, bool blue){
   // bools are flipped bc -> all colors off = white
   // at least for my waterboiler LED vase
-  digitalWrite(2, !red);
-  digitalWrite(3, !green);
-  digitalWrite(4, !blue);
+  digitalWrite(redIO, !red);
+  digitalWrite(greenIO, !green);
+  digitalWrite(blueIO, !blue);
+  //Serial.begin(9600);
 }
 
 void red(){
@@ -38,70 +45,102 @@ void off(){
   lampCtl(0, 0, 0);
 }
 
-void party(){
+void party(int iterations, int pMin, int pMax){
   red();
-  waitAndAbortIfChanged();
+  if(waitAndAbortIfChanged(iterations, pMin, pMax)){
+    return;
+  }
+
   white();
-  waitAndAbortIfChanged();
+  if(waitAndAbortIfChanged(iterations, pMin, pMax)){
+    return;
+  }  
+
   green();
-  waitAndAbortIfChanged();
+  if(waitAndAbortIfChanged(iterations, pMin, pMax)){
+    return;
+  }  
+
   yellow();
-  waitAndAbortIfChanged();
+  if(waitAndAbortIfChanged(iterations, pMin, pMax)){
+    return;
+  }  
+  
   blue();
-  waitAndAbortIfChanged();
+  if(waitAndAbortIfChanged(iterations, pMin, pMax)){
+    return;
+  }  
+  
   cyan();
-  waitAndAbortIfChanged();
+  if(waitAndAbortIfChanged(iterations, pMin, pMax)){
+    return;
+  }  
+  
   magenta();
-  waitAndAbortIfChanged();
+  if(waitAndAbortIfChanged(iterations, pMin, pMax)){
+    return;
+  }
 }
 
-void waitAndAbortIfChanged(){
-  for(int i = 0 ; i < 20 ; ++i){
+int waitAndAbortIfChanged(int iterations, int pMin, int pMax){
+  int pW = 0;
+  for(int i = 0 ; i < iterations ; ++i){
     delay(50);
-    if(analogRead(A0) < 951){
-      return;
+    pW = analogRead(A0);
+    if(pW < pMin && pW > pMax){
+      return 1;
   	}
   }
+  return 0;
 }
 
 void loop() {
   int p = analogRead(A0);
+  //Serial.println(p);
   
-  if(p > 951){
-    party();
-  }
-  
-  if(p > 876 && p < 950){
-    white();
+  if(p > 901){
+    party(100, 901, 1000);
   }
 
-  if(p > 751 && p < 875){
+  if(p > 801 && p < 900){
+    party(20, 801, 900);
+  }
+
+  if(p > 701 && p < 800){
+    party(5, 701, 800);
+  }
+
+  if(p > 601 && p < 700){
     yellow();
   }
 
-  if(p > 626 && p < 750){
+  if(p > 501 && p < 600){
     cyan();
   }
 
-  if(p > 501 && p < 625){
+  if(p > 401 && p < 500){
     magenta();
   }
 
-  if(p > 376 && p < 500){
+  if(p > 301 && p < 400){
     blue();
   }
 
-  if(p > 251 && p < 375){
+  if(p > 201 && p < 300){
     green();
   }
 
-  if(p > 126 && p < 250){
+  if(p > 101 && p < 200){
     red();
   }
 
-  if(p < 125){
+  if(p > 21 && p < 100){
+    white();
+  }
+
+  if(p < 20){
     off();
   }
 
-  delay(50);
+  //Sleepy::loseSomeTime(100);
 }
